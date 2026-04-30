@@ -6,11 +6,34 @@
 #define SCROLL  5
 #define SNIPE   6
 
+/* --- 1. 轨迹球性能定义 (从旧代码迁移) --- */
+#define ZMK_POINTING_DEFAULT_MOVE_VAL 1500
+#define ZMK_POINTING_DEFAULT_SCRL_VAL 100 
+
 #include <behaviors/mouse_keys.dtsi>
 #include <dt-bindings/zmk/mouse.h>
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/pointing.h>
+#include <input/processors.dtsi>
+#include <zephyr/dt-bindings/input/input-event-codes.h>
+
+/* --- 2. 轨迹球加速与缩放配置 (核心优化) --- */
+&mmv_input_listener { input-processors = <&zip_xy_scaler 2 1>; };
+&msc_input_listener { input-processors = <&zip_scroll_scaler 2 2>; };
+
+&msc {
+    acceleration-exponent = <0>;      
+    time-to-max-speed-ms = <0>;       
+    delay-ms = <0>;
+};
+
+&mmv {
+    time-to-max-speed-ms = <200>;
+    acceleration-exponent = <2>;
+    trigger-period-ms = <8>;
+};
 
 &lt {
     tapping-term-ms = <240>;
@@ -27,29 +50,70 @@
 &caps_word { continue-list = <UNDERSCORE MINUS>; };
 
 / {
-    // custom shift using mod-morph 
+    /* --- 3. 组合键配置 (Combos) --- */
+    /* 适配 Keyball39 的键位：Q(0), W(1), R(3), T(4), Y(5), U(6) */
+    combos {
+        compatible = "zmk,combos";
+        qw_esc { bindings = <&kp ESC>; key-positions = <0 1>; };
+        rt_lpar { bindings = <&kp LEFT_PARENTHESIS>; key-positions = <3 4>; };
+        yu_rpar { bindings = <&kp RIGHT_PARENTHESIS>; key-positions = <5 6>; };
+    };
 
     behaviors {
+        /* 旧键盘的家乡键 (Home-row Mods) */
+        hm: homerow_mods {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            tapping-term-ms = <200>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <150>;
+            flavor = "balanced";
+            bindings = <&kp>, <&kp>;
+        };
+
+        /* 旧键盘的二合一 Shift */
+        td0: td0 {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            bindings = <&kp LEFT_SHIFT>, <&kp CAPS>;
+        };
+
         cmqus: comma_question {
             compatible = "zmk,behavior-mod-morph";
-            label = "COMMA_QUESTION";
             #binding-cells = <0>;
             bindings = <&kp COMMA>, <&kp QUESTION>;
-
             mods = <(MOD_LSFT|MOD_RSFT)>;
         };
 
         dtsmi: dot_semi {
             compatible = "zmk,behavior-mod-morph";
-            label = "DOT_SEMI";
             #binding-cells = <0>;
             bindings = <&kp DOT>, <&kp SEMI>;
-
             mods = <(MOD_LSFT|MOD_RSFT)>;
         };
     };
 
     macros {
+        /* 旧键盘的鼠标中键锁定宏 */
+        mmb_on: mmb_on {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_press>, <&mkp MCLK>, <&macro_tap>, <&tog MOUSE>;
+        };
+
+        mmb_off: mmb_off {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_release>, <&mkp MCLK>, <&macro_tap>, <&tog MOUSE>;
+        };
+
+        /* 旧键盘的 GUI+点击 宏 */
+        open_bg: open_bg {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_press>, <&kp LGUI>, <&macro_tap>, <&mkp LCLK>, <&macro_release>, <&kp LGUI>;
+        };
+
         Hiragana: Hiragana {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
@@ -61,13 +125,14 @@
     keymap {
         compatible = "zmk,keymap";
 
+        /* 默认层：引入了 hm (家乡键) 提高打字和 R 语言编码效率 */
         default_layer {
             label = "QWRT";
             bindings = <
-&kp Q      &kp W         &kp E     &kp R         &kp T                                    &kp Y            &kp U  &kp I      &kp O    &kp P
-&kp A      &kp S         &kp D     &kp F         &kp G                                    &kp H            &kp J  &kp K      &kp L    &kp SEMI
-&kp Z      &kp X         &kp C     &kp V         &kp B                                    &kp N            &kp M  &kp COMMA  &kp DOT  &kp SLASH
-&kp LCTRL  &kp LEFT_WIN  &kp LALT  &lt 6 ESCAPE  &lt 4 SPACE  &lt 5 LA(GRAVE)  &kp ENTER  &lt 2 BACKSPACE                             &kp RSHFT
+&kp Q          &kp W          &kp E          &kp R          &kp T                                     &kp Y          &kp U          &kp I          &kp O          &kp P
+&hm LSHFT A    &hm LCTRL S    &hm LALT D     &hm LGUI F     &kp G                                     &kp H          &hm RGUI J     &hm RALT K     &hm RCTRL L    &hm RSHFT SEMI
+&kp Z          &kp X          &kp C          &kp V          &kp B                                     &kp N          &kp M          &cmqus         &dtsmi         &kp SLASH
+&kp LCTRL      &kp LEFT_WIN   &kp LALT       &lt 6 ESCAPE   &lt 4 SPACE    &lt 5 LA(GRAVE)  &kp ENTER  &lt 2 BACKSPACE                              &td0
             >;
         };
 
@@ -77,37 +142,38 @@
 &kp NUMBER_1  &kp NUMBER_2  &kp NUMBER_3  &kp NUMBER_4  &kp NUMBER_5                  &kp NUMBER_6  &kp NUMBER_7  &kp NUMBER_8  &kp NUMBER_9  &kp NUMBER_0
 &kp LEFT      &kp DOWN      &kp UP_ARROW  &kp RIGHT     &none                         &none         &none         &none         &none         &none
 &none         &none         &none         &none         &none                         &none         &none         &trans        &trans        &none
-&trans        &trans        &trans        &trans        &trans        &trans  &trans  &trans                                                  &trans
+&trans        &trans        &trans        &trans        &trans        &trans  &trans  &trans                                    &trans
             >;
         };
 
         symbol_layer {
             label = "SYM";
             bindings = <
-&kp EXCLAMATION  &kp AT_SIGN   &kp HASH      &kp DOLLAR    &kp PERCENT                  &kp CARET       &kp AMPERSAND  &kp ASTERISK      &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS
-&bt BT_CLR       &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &trans                       &kp MINUS       &kp EQUAL      &kp LEFT_BRACKET  &kp RIGHT_BRACKET     &kp SQT
-&trans           &trans        &trans        &trans        &trans                       &kp UNDERSCORE  &kp PLUS       &trans            &trans                &kp NON_US_BACKSLASH
-&trans           &trans        &trans        &trans        &trans       &trans  &trans  &trans                                                                 &trans
+&kp EXCL      &kp AT        &kp HASH      &kp DLLR      &kp PRCNT                     &kp CARET     &kp AMPS      &kp ASTRK     &kp LPAR      &kp RPAR
+&bt BT_CLR    &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &trans                        &kp MINUS     &kp EQUAL     &kp LBKT      &kp RBKT      &kp SQT
+&trans        &trans        &trans        &trans        &trans                        &kp UNDER     &kp PLUS      &trans        &trans        &kp BSLH
+&trans        &trans        &trans        &trans        &trans        &trans  &trans  &trans                                    &trans
             >;
         };
 
         function_layer {
             label = "FUN";
             bindings = <
-&kp F1  &kp F2   &kp F3   &kp F4   &none                   &none   &none  &none  &none  &none
-&kp F5  &kp F6   &kp F7   &kp F8   &none                   &none   &none  &none  &none  &none
-&kp F9  &kp F10  &kp F11  &kp F12  &none                   &none   &none  &none  &none  &none
+&kp F1  &kp F2   &kp F3   &kp F4   &none                         &none   &none  &none  &none  &none
+&kp F5  &kp F6   &kp F7   &kp F8   &none                         &none   &none  &none  &none  &none
+&kp F9  &kp F10  &kp F11  &kp F12  &none                         &none   &none  &none  &none  &none
 &trans  &trans   &trans   &trans   &trans  &trans  &trans  &trans                       &trans
             >;
         };
 
+        /* 鼠标层：结合了旧代码的 open_bg 和 mmb 逻辑 */
         mouse_layer {
             label = "MOUSE";
             bindings = <
-&kp N1          &kp N2          &kp N3        &kp N4     &kp N5                  &kp N6         &kp N7     &kp N8  &kp N9     &kp N0
-&kp LEFT_ARROW  &kp DOWN_ARROW  &kp UP_ARROW  &kp RIGHT  &none                   &kp PAGE_UP    &mkp LCLK  &none   &mkp RCLK  &mkp MCLK
-&none           &none           &none         &none      &none                   &kp PAGE_DOWN  &none      &none   &none      &none
-&none           &trans          &trans        &trans     &trans  &trans  &trans  &mo 3                                        &none
+&kp N1         &kp N2         &kp N3        &kp N4         &kp N5                        &kp N6         &kp N7         &kp N8  &kp N9     &kp N0
+&kp LEFT       &kp DOWN       &kp UP        &kp RIGHT      &open_bg                      &kp PAGE_UP    &mkp LCLK      &none   &mkp RCLK  &mmb_off
+&none          &none          &none         &none          &none                         &kp PAGE_DOWN  &none          &none   &none      &none
+&none          &trans         &trans        &trans         &trans  &trans  &trans  &mo 3                                       &none
             >;
         };
 
@@ -124,10 +190,10 @@
         snipe_layer {
             label = "SNIPE";
             bindings = <
-&trans  &trans  &trans  &trans  &bootloader                  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans                       &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans                       &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans       &trans  &trans  &trans                          &trans
+&trans  &trans  &trans  &trans  &bootloader             &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans                          &trans
             >;
         };
     };
