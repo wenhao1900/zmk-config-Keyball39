@@ -28,17 +28,17 @@ layers:
   - B
   - N
   - M
-  - {t: ',', s: '?'}
-  - {t: ., s: ;}
+  - {t: ',', s: <}
+  - .
   - {t: /, s: '?'}
   - '&mkp MB2'
   - '&mmb_on'
   - '&mkp MB1'
-  - {t: FUN, h: toggle}
+  - {t: MUTE, h: FUN}
   - {t: '$$mdi:backspace$$', h: SYM}
   - {t: 'Alt+$$mdi:keyboard-space$$', h: LGUI}
-  - {t: '$$mdi:keyboard-return$$', type: enter}
-  - {t: '$$mdi:backspace$$', h: SYM}
+  - $$mdi:keyboard-tab$$
+  - {t: '$$mdi:keyboard-return$$', h: SYM}
   - $$mdi:keyboard-esc$$
   NUM:
   - {t: '`', s: '~'}
@@ -154,7 +154,7 @@ layers:
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
-  - {t: '$$mdi:transfer$$', type: trans}
+  - {type: held}
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
