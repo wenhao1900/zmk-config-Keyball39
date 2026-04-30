@@ -112,7 +112,7 @@ layers:
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
-  - {t: '$$mdi:transfer$$', type: trans}
+  - '&mmb_off'
   - {t: '$$mdi:transfer$$', type: trans}
   - {type: held}
   - {t: '0', s: )}
@@ -162,10 +162,10 @@ layers:
   - {t: '$$mdi:transfer$$', type: trans}
   MOUSE:
   - {t: '1', s: '!'}
-  - {t: '2', s: '@'}
-  - {t: '3', s: '#'}
-  - {t: '4', s: $}
-  - {t: '5', s: '%'}
+  - W
+  - '&mkp MB4'
+  - '&mmb_on'
+  - '&mkp MB1'
   - {t: '6', s: ^}
   - {t: '7', s: '&'}
   - {t: '8', s: '*'}
@@ -175,10 +175,10 @@ layers:
   - $$mdi:arrow-down-bold$$
   - $$mdi:arrow-up-bold$$
   - $$mdi:arrow-right-bold$$
-  - '&open_bg'
+  - '&mkp MB2'
   - $$mdi:volume-high$$
   - $$mdi:arrow-left-bold$$
-  - '&mmb_off'
+  - {t: '$$mdi:transfer$$', type: trans}
   - $$mdi:arrow-right-bold$$
   - Gui+W
   - {t: '$$mdi:minus-circle-outline$$', type: none}
@@ -191,11 +191,11 @@ layers:
   - '&mmb_on'
   - '&mkp MB2'
   - '&mkp MB4'
-  - {t: '$$mdi:minus-circle-outline$$', type: none}
-  - '&mmb_off'
+  - '&mkp MB2'
+  - '&mmb_on'
+  - '&mkp MB1'
   - {t: '$$mdi:transfer$$', type: trans}
-  - {t: '$$mdi:transfer$$', type: trans}
-  - {t: '$$mdi:transfer$$', type: trans}
+  - {t: '$$mdi:keyboard-space$$', h: LGUI}
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: QWRT, h: toggle}
   - {t: '$$mdi:keyboard-space$$', h: 'Gui+$$mdi:keyboard-space$$'}
