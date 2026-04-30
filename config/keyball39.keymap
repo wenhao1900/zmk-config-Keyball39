@@ -7,6 +7,7 @@
 #define SNIPE   6
 
 /* --- 1. 轨迹球性能定义 --- */
+
 #define ZMK_POINTING_DEFAULT_MOVE_VAL 1500
 #define ZMK_POINTING_DEFAULT_SCRL_VAL 100
 
@@ -19,7 +20,9 @@
 #include <dt-bindings/zmk/pointing.h>
 
 /* --- 2. 轨迹球加速与缩放配置 --- */
+
 &mmv_input_listener { input-processors = <&zip_xy_scaler 2 1>; };
+
 &msc_input_listener { input-processors = <&zip_scroll_scaler 2 2>; };
 
 &msc {
@@ -50,11 +53,24 @@
 
 / {
     /* --- 3. 组合键配置 --- */
+
     combos {
         compatible = "zmk,combos";
-        qw_esc { bindings = <&kp ESC>; key-positions = <0 1>; };
-        rt_lpar { bindings = <&kp LEFT_PARENTHESIS>; key-positions = <3 4>; };
-        yu_rpar { bindings = <&kp RIGHT_PARENTHESIS>; key-positions = <5 6>; };
+
+        qw_esc {
+            bindings = <&kp ESC>;
+            key-positions = <0 1>;
+        };
+
+        rt_lpar {
+            bindings = <&kp LEFT_PARENTHESIS>;
+            key-positions = <3 4>;
+        };
+
+        yu_rpar {
+            bindings = <&kp RIGHT_PARENTHESIS>;
+            key-positions = <5 6>;
+        };
     };
 
     behaviors {
@@ -78,6 +94,7 @@
             compatible = "zmk,behavior-mod-morph";
             #binding-cells = <0>;
             bindings = <&kp COMMA>, <&kp QUESTION>;
+
             mods = <(MOD_LSFT|MOD_RSFT)>;
         };
 
@@ -85,30 +102,41 @@
             compatible = "zmk,behavior-mod-morph";
             #binding-cells = <0>;
             bindings = <&kp DOT>, <&kp SEMI>;
+
             mods = <(MOD_LSFT|MOD_RSFT)>;
         };
     };
 
     macros {
         /* 修改后的纯净版宏：仅负责 MCLK 状态，不干扰图层 */
+
         mmb_on: mmb_on {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&macro_press &mkp MCLK>;
+            bindings = <&macro_press>, <&mkp MCLK>;
+
             label = "MMB_ON";
         };
 
         mmb_off: mmb_off {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&macro_release &mkp MCLK>;
+            bindings = <&macro_release>, <&mkp MCLK>;
+
             label = "MMB_OFF";
         };
 
         open_bg: open_bg {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&macro_press &kp LGUI>, <&macro_tap &mkp LCLK>, <&macro_release &kp LGUI>;
+            bindings =
+                <&macro_press>,
+                <&kp LGUI>,
+                <&macro_tap>,
+                <&mkp LCLK>,
+                <&macro_release>,
+                <&kp LGUI>;
+
             label = "OPEN_BG";
         };
 
@@ -126,20 +154,20 @@
         default_layer {
             label = "QWRT";
             bindings = <
-&kp Q        &kp W        &kp E        &kp R        &kp T                                           &kp Y        &kp U        &kp I        &kp O         &kp P
-&hm LSHFT A  &hm LCTRL S  &hm LALT D   &hm LGUI F   &kp G                                           &kp H        &hm RGUI J   &hm RALT K   &hm RCTRL L   &hm RSHFT SEMI
-&kp Z        &kp X        &kp C        &kp V        &kp B                                           &kp N        &kp M        &cmqus       &dtsmi        &kp SLASH
-&mkp MB2     &mmb_on      &mkp MB1     &to 4        &lt 2 BACKSPACE  &mt LGUI LA(SPACE)  &lt 1 TAB  &lt 2 ENTER                                          &kp ESC
+&kp Q        &kp W        &kp E       &kp R            &kp T                                 &kp Y        &kp U       &kp I       &kp O        &kp P
+&hm LSHFT A  &hm LCTRL S  &hm LALT D  &hm LGUI F       &kp G                                 &kp H        &hm RGUI J  &hm RALT K  &hm RCTRL L  &hm RSHFT SEMI
+&kp Z        &kp X        &kp C       &kp V            &kp B                                 &kp N        &kp M       &kp COMMA   &kp PERIOD   &kp SLASH
+&mkp MB2     &mmb_on      &mkp MB1    &lt 2 BACKSPACE  &mt LEFT_GUI SPACE  &to 4  &lt 2 TAB  &lt 1 ENTER                                       &kp ESC
             >;
         };
 
         number_layer {
             label = "NUM";
             bindings = <
-&kp GRAVE  &kp UP    &kp N3  &kp N4  &kp N9                  &kp N3  &kp N6  &trans  &trans  &trans
-&kp LEFT   &kp DOWN  &kp UP  &kp N0  &kp N8                  &kp N2  &kp N5  &kp MINUS  &kp EQUAL  &kp APOS
-&none      &none     &none   &none   &kp N7                  &kp N1  &kp N4  &kp LBKT  &kp RBKT  &kp CAPS
-&trans     &trans    &trans  &trans  &kp LSHFT  &mt LGUI SPACE  &kp TAB  &kp ENTER                  &kp ESC
+&kp GRAVE  &kp UP    &kp N3  &kp N4          &kp N9                               &kp N3     &kp N6  &trans     &trans     &trans
+&kp LEFT   &kp DOWN  &kp UP  &kp N0          &kp N8                               &kp N2     &kp N5  &kp MINUS  &kp EQUAL  &kp APOS
+&none      &none     &none   &none           &kp N7                               &kp N1     &kp N4  &kp LBKT   &kp RBKT   &kp CAPS
+&trans     &trans    &trans  &kp LEFT_SHIFT  &mt LEFT_GUI SPACE  &trans  &kp TAB  &kp ENTER                                &kp ESC
             >;
         };
 
@@ -149,27 +177,27 @@
 &trans     &trans  &mkp MB4  &kp LA(Q)  &kp LA(A)                  &kp N7  &kp N8  &kp N9  &trans  &trans
 &kp LSHFT  &trans  &trans    &trans     &trans                     &kp N4  &kp N5  &kp N6  &trans  &trans
 &trans     &trans  &trans    &trans     &trans                     &kp N1  &kp N2  &kp N3  &trans  &trans
-&trans     &trans  &trans    &trans     &kp N0  &trans  &trans     &kp N0                          &trans
+&trans     &trans  &trans    &trans     &kp N0     &trans  &trans  &kp N0                          &trans
             >;
         };
 
         function_layer {
             label = "FUN";
             bindings = <
-&kp F1  &kp F2   &kp F3   &kp F4   &none                  &none  &none  &none  &none  &none
-&kp F5  &kp F6   &kp F7   &kp F8   &none                  &none  &none  &none  &none  &none
-&kp F9  &kp F10  &kp F11  &kp F12  &none                  &none  &none  &none  &none  &none
-&trans  &trans   &trans   &trans   &trans  &trans  &trans  &trans                      &trans
+&kp F1  &kp F2   &kp F3   &kp F4   &none                   &none   &none  &none  &none  &none
+&kp F5  &kp F6   &kp F7   &kp F8   &none                   &none   &none  &none  &none  &none
+&kp F9  &kp F10  &kp F11  &kp F12  &none                   &none   &none  &none  &none  &none
+&trans  &trans   &trans   &trans   &trans  &trans  &trans  &trans                       &trans
             >;
         };
 
         mouse_layer {
             label = "MOUSE";
             bindings = <
-&kp N1    &kp N2     &kp N3   &kp N4    &kp N5                  &kp N6       &kp N7    &kp N8    &kp N9    &kp N0
-&kp LEFT  &kp DOWN   &kp UP   &kp RIGHT &open_bg                &kp PAGE_UP  &mkp MB1  &mmb_on   &mkp MB2  &trans
-&none     &mmb_off   &none    &none     &none                   &kp PAGE_DOWN &none    &mmb_off  &none     &none
-&none     &mmb_off   &trans   &trans    &trans    &trans  &to 0  &kp SPACE                         &kp ESC
+&kp N1    &kp N2    &kp N3  &kp N4     &kp N5                   &kp N6         &kp N7    &kp N8    &kp N9    &kp N0
+&kp LEFT  &kp DOWN  &kp UP  &kp RIGHT  &open_bg                 &kp PAGE_UP    &mkp MB1  &mmb_on   &mkp MB2  &trans
+&none     &mmb_off  &none   &none      &none                    &kp PAGE_DOWN  &none     &mmb_off  &none     &none
+&none     &mmb_off  &trans  &trans     &trans    &trans  &to 0  &kp SPACE                                    &kp ESC
             >;
         };
 
@@ -186,10 +214,10 @@
         snipe_layer {
             label = "SNIPE";
             bindings = <
-&trans  &trans  &trans  &trans  &bootloader             &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans                          &trans
+&trans  &trans  &trans  &trans  &bootloader                  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans                       &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans                       &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans       &trans  &trans  &trans                          &trans
             >;
         };
     };
