@@ -28,17 +28,17 @@ layers:
   - B
   - N
   - M
-  - {t: ',', s: '?'}
-  - {t: ., s: ;}
+  - {t: ',', s: <}
+  - .
   - {t: /, s: '?'}
   - '&mkp MB2'
   - '&mmb_on'
   - '&mkp MB1'
-  - {t: MOUSE, h: toggle}
   - {t: '$$mdi:backspace$$', h: SYM}
-  - {t: 'Alt+$$mdi:keyboard-space$$', h: LGUI}
-  - {t: '$$mdi:keyboard-tab$$', h: NUM}
-  - {t: '$$mdi:keyboard-return$$', h: SYM}
+  - {t: '$$mdi:keyboard-space$$', h: '$$mdi:apple-keyboard-command$$'}
+  - {t: MOUSE, h: toggle}
+  - {t: '$$mdi:keyboard-tab$$', h: SYM}
+  - {t: '$$mdi:keyboard-return$$', h: NUM}
   - $$mdi:keyboard-esc$$
   NUM:
   - {t: '`', s: '~'}
@@ -74,11 +74,11 @@ layers:
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
-  - {t: '$$mdi:transfer$$', type: trans}
   - $$mdi:apple-keyboard-shift$$
-  - {t: '$$mdi:keyboard-space$$', h: LGUI}
-  - {t: '$$mdi:keyboard-tab$$', type: held}
-  - {t: '$$mdi:keyboard-return$$', type: enter}
+  - {t: '$$mdi:keyboard-space$$', h: '$$mdi:apple-keyboard-command$$'}
+  - {t: '$$mdi:transfer$$', type: trans}
+  - $$mdi:keyboard-tab$$
+  - {t: '$$mdi:keyboard-return$$', type: held}
   - $$mdi:keyboard-esc$$
   SYM:
   - {t: '$$mdi:transfer$$', type: trans}
@@ -114,11 +114,11 @@ layers:
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
+  - {type: held}
+  - {t: '0', s: )}
   - {t: '$$mdi:transfer$$', type: trans}
-  - {t: '0', s: ), type: held}
-  - {t: '$$mdi:transfer$$', type: trans}
-  - {t: '$$mdi:transfer$$', type: trans}
-  - {t: '0', s: ), type: held alternate}
+  - {type: held alternate}
+  - {t: '0', s: )}
   - {t: '$$mdi:transfer$$', type: trans}
   FUN:
   - F1
