@@ -161,10 +161,10 @@
         default_layer {
             label = "QWRT";
             bindings = <
-&kp Q        &kp W        &kp E       &kp R         &kp T                                         &kp Y        &kp U       &kp I       &kp O        &kp P
-&hm LSHFT A  &hm LCTRL S  &hm LALT D  &hm LGUI F    &kp G                                         &kp H        &hm RGUI J  &hm RALT K  &hm RCTRL L  &hm RSHFT SEMI
-&kp Z        &kp X        &kp C       &kp V         &kp B                                         &kp N        &kp M       &kp COMMA   &kp PERIOD   &kp SLASH
-&mkp MB2     &mmb_on      &mkp MB1    &lt 3 K_MUTE  &lt 2 BACKSPACE  &mt LGUI LA(SPACE)  &kp TAB  &lt 2 ENTER                                       &kp ESC
+&kp Q        &kp W        &kp E       &kp R         &kp T                                           &kp Y        &kp U       &kp I       &kp O        &kp P
+&hm LSHFT A  &hm LCTRL S  &hm LALT D  &hm LGUI F    &kp G                                           &kp H        &hm RGUI J  &hm RALT K  &hm RCTRL L  &hm RSHFT SEMI
+&kp Z        &kp X        &kp C       &kp V         &kp B                                           &kp N        &kp M       &kp COMMA   &kp PERIOD   &kp SLASH
+&mkp MB2     &mmb_on      &mkp MB1    &lt 3 K_MUTE  &lt 2 BACKSPACE  &mt LGUI LA(SPACE)  &lt 1 TAB  &lt 2 ENTER                                       &kp ESC
             >;
         };
 
@@ -174,7 +174,7 @@
 &kp GRAVE  &kp UP_ARROW  &kp NUMBER_3  &kp NUMBER_4  &kp NUMBER_9                             &kp NUMBER_3  &kp NUMBER_6  &trans            &trans             &trans
 &kp LEFT   &kp DOWN      &kp UP_ARROW  &kp NUMBER_0  &kp NUMBER_8                             &kp NUMBER_2  &kp NUMBER_5  &kp MINUS         &kp EQUAL          &kp APOS
 &none      &none         &none         &none         &kp NUMBER_7                             &kp NUMBER_1  &kp NUMBER_4  &kp LEFT_BRACKET  &kp RIGHT_BRACKET  &kp CAPS
-&trans     &mmb_off      &trans        &trans        &kp LEFT_SHIFT  &mt LGUI SPACE  &kp TAB  &kp ENTER                                                        &kp ESC
+&trans     &trans        &trans        &trans        &kp LEFT_SHIFT  &mt LGUI SPACE  &kp TAB  &kp ENTER                                                        &kp ESC
             >;
         };
 
@@ -206,7 +206,7 @@
 &kp N1    &kp N2    &kp N3  &kp N4     &kp N5                    &kp N6         &kp N7     &kp N8  &kp N9     &kp N0
 &kp LEFT  &kp DOWN  &kp UP  &kp RIGHT  &open_bg                  &kp PAGE_UP    &mkp LCLK  &none   &mkp RCLK  &mmb_off
 &none     &none     &none   &none      &none                     &kp PAGE_DOWN  &none      &none   &none      &none
-&none     &trans    &trans  &trans     &trans    &trans  &trans  &mo 3                                        &none
+&none     &mmb_off  &trans  &trans     &trans    &trans  &trans  &mo 3                                        &none
             >;
         };
 
