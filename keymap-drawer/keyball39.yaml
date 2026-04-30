@@ -164,7 +164,7 @@ layers:
   - {t: '1', s: '!'}
   - W
   - '&mkp MB4'
-  - '&mmb_on'
+  - {t: '$$mdi:transfer$$', type: trans}
   - '&mkp MB1'
   - {t: '6', s: ^}
   - {t: '7', s: '&'}
