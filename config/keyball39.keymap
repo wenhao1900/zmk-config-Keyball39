@@ -90,19 +90,19 @@
     };
 
     macros {
-        /* 锁定宏：按中键 + 强制跳到第 5 层 */
+        /* 智能锁定宏：按下中键 + 切换(Toggle)第5层 */
         mmb_on: mmb_on {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&macro_press &mkp MCLK>, <&to 5>;
+            bindings = <&macro_press>, <&mkp MCLK>, <&macro_tap>, <&tog 5>;
             label = "MMB_ON";
         };
 
-        /* 释放宏：松中键 + 强制回第 0 层 */
+        /* 智能释放宏：释放中键 + 再次切换(Toggle)关闭第5层 */
         mmb_off: mmb_off {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&macro_release &mkp MCLK>, <&to 0>;
+            bindings = <&macro_release>, <&mkp MCLK>, <&macro_tap>, <&tog 5>;
             label = "MMB_OFF";
         };
 
@@ -167,20 +167,21 @@
         mouse_layer {
             label = "MOUSE";
             bindings = <
-&kp N1    &kp W     &mkp MB4  &mmb_on    &mkp MB1                        &kp N6                &kp N7          &kp N8  &kp N9     &kp N0
-&kp LEFT  &kp DOWN  &kp UP    &kp RIGHT  &mkp MB2                        &kp C_VOLUME_UP       &kp LEFT_ARROW  &trans  &kp RIGHT  &kp RG(W)
-&none     &trans    &none     &none      &none                           &kp C_VOLUME_DOWN     &mkp MB1        &mmb_on &mkp MB2   &mkp MB4
-&mkp MB2  &mmb_on   &mkp MB1  &trans     &mt LGUI SPACE  &trans  &to 0   &mt LG(SPACE) SPACE                                      &kp ESC
+&kp N1    &kp W     &mkp MB4  &mmb_on    &mkp MB1                        &kp N6                &kp N7          &kp N8   &kp N9     &kp N0
+&kp LEFT  &kp DOWN  &kp UP    &kp RIGHT  &mkp MB2                        &kp C_VOLUME_UP       &kp LEFT_ARROW  &trans   &kp RIGHT  &kp RG(W)
+&none     &mmb_on   &none     &none      &none                           &kp C_VOLUME_DOWN     &mkp MB1        &mmb_on  &mkp MB2   &mkp MB4
+&mkp MB2  &mmb_on   &mkp MB1  &trans     &mt LGUI SPACE  &trans  &to 0   &mt LG(SPACE) SPACE                                       &kp ESC
             >;
         };
 
+        /* 第 5 层：滚动锁定层。这里的 mmb_off 位置必须和 L0、L4 的 mmb_on 位置严格对应 */
         scroll_layer {
             label = "SCROLL";
             bindings = <
-&trans    &trans    &trans    &trans     &trans                  &trans  &trans  &trans  &trans  &trans
-&trans    &trans    &trans    &trans     &trans                  &trans  &trans  &trans  &trans  &trans
-&trans    &mmb_off  &trans    &trans     &trans                  &trans  &trans  &trans  &trans  &trans
-&trans    &mmb_off  &trans    &trans     &trans  &trans  &to 0   &trans                          &trans
+&trans    &trans    &trans    &mmb_off   &trans                  &trans  &trans  &trans    &trans  &trans
+&trans    &trans    &trans    &trans     &trans                  &trans  &trans  &trans    &trans  &trans
+&trans    &mmb_off  &trans    &trans     &trans                  &trans  &trans  &mmb_off  &trans  &trans
+&trans    &mmb_off  &trans    &trans     &trans  &trans  &to 0   &trans                            &trans
             >;
         };
 
