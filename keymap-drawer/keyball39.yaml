@@ -176,21 +176,21 @@ layers:
   - $$mdi:arrow-up-bold$$
   - $$mdi:arrow-right-bold$$
   - '&open_bg'
-  - PgUp
+  - $$mdi:volume-high$$
+  - $$mdi:arrow-left-bold$$
+  - '&mmb_off'
+  - $$mdi:arrow-right-bold$$
+  - Gui+W
+  - {t: '$$mdi:minus-circle-outline$$', type: none}
+  - {t: '$$mdi:transfer$$', type: trans}
+  - {t: '$$mdi:minus-circle-outline$$', type: none}
+  - {t: '$$mdi:minus-circle-outline$$', type: none}
+  - {t: '$$mdi:minus-circle-outline$$', type: none}
+  - $$mdi:volume-low$$
   - '&mkp MB1'
   - '&mmb_on'
   - '&mkp MB2'
-  - {t: '$$mdi:transfer$$', type: trans}
-  - {t: '$$mdi:minus-circle-outline$$', type: none}
-  - '&mmb_off'
-  - {t: '$$mdi:minus-circle-outline$$', type: none}
-  - {t: '$$mdi:minus-circle-outline$$', type: none}
-  - {t: '$$mdi:minus-circle-outline$$', type: none}
-  - PgDn
-  - {t: '$$mdi:minus-circle-outline$$', type: none}
-  - '&mmb_off'
-  - {t: '$$mdi:minus-circle-outline$$', type: none}
-  - {t: '$$mdi:minus-circle-outline$$', type: none}
+  - '&mkp MB4'
   - {t: '$$mdi:minus-circle-outline$$', type: none}
   - '&mmb_off'
   - {t: '$$mdi:transfer$$', type: trans}
@@ -198,7 +198,7 @@ layers:
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: QWRT, h: toggle}
-  - $$mdi:keyboard-space$$
+  - {t: '$$mdi:keyboard-space$$', h: 'Gui+$$mdi:keyboard-space$$'}
   - $$mdi:keyboard-esc$$
   SCROLL:
   - {t: '$$mdi:transfer$$', type: trans}
