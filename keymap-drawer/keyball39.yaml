@@ -28,8 +28,8 @@ layers:
   - B
   - N
   - M
-  - {t: ',', s: <}
-  - .
+  - {t: ',', s: '?'}
+  - {t: ., s: ;}
   - {t: /, s: '?'}
   - '&mkp MB2'
   - '&mmb_on'
@@ -43,21 +43,21 @@ layers:
   NUM:
   - {t: '`', s: '~'}
   - $$mdi:arrow-up-bold$$
-  - '3'
-  - '4'
-  - '9'
-  - '3'
-  - '6'
+  - {t: '3', s: '#'}
+  - {t: '4', s: $}
+  - {t: '9', s: (}
+  - {t: '3', s: '#'}
+  - {t: '6', s: ^}
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
   - $$mdi:arrow-left-bold$$
   - $$mdi:arrow-down-bold$$
   - $$mdi:arrow-up-bold$$
-  - '0'
-  - '8'
-  - '2'
-  - '5'
+  - {t: '0', s: )}
+  - {t: '8', s: '*'}
+  - {t: '2', s: '@'}
+  - {t: '5', s: '%'}
   - {t: '-', s: _}
   - {t: '=', s: +}
   - .
@@ -65,9 +65,9 @@ layers:
   - {t: '$$mdi:minus-circle-outline$$', type: none}
   - {t: '$$mdi:minus-circle-outline$$', type: none}
   - {t: '$$mdi:minus-circle-outline$$', type: none}
-  - '7'
-  - '1'
-  - '4'
+  - {t: '7', s: '&'}
+  - {t: '1', s: '!'}
+  - {t: '4', s: $}
   - {t: '[', s: '{'}
   - {t: ']', s: '}'}
   - $$mdi:apple-keyboard-caps$$
@@ -86,9 +86,9 @@ layers:
   - '&mkp MB4'
   - Alt+Q
   - Alt+A
-  - '7'
-  - '8'
-  - '9'
+  - {t: '7', s: '&'}
+  - {t: '8', s: '*'}
+  - {t: '9', s: (}
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
   - $$mdi:apple-keyboard-shift$$
@@ -96,9 +96,9 @@ layers:
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
-  - '4'
-  - '5'
-  - '6'
+  - {t: '4', s: $}
+  - {t: '5', s: '%'}
+  - {t: '6', s: ^}
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
@@ -106,19 +106,19 @@ layers:
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
-  - '1'
-  - '2'
-  - '3'
+  - {t: '1', s: '!'}
+  - {t: '2', s: '@'}
+  - {t: '3', s: '#'}
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
-  - {t: '0', type: held}
+  - {t: '0', s: ), type: held}
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
-  - {t: '0', type: held alternate}
+  - {t: '0', s: ), type: held alternate}
   - {t: '$$mdi:transfer$$', type: trans}
   FUN:
   - F1
@@ -182,7 +182,7 @@ layers:
   - '&mkp MB2'
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:minus-circle-outline$$', type: none}
-  - {t: '$$mdi:minus-circle-outline$$', type: none}
+  - '&mmb_off'
   - {t: '$$mdi:minus-circle-outline$$', type: none}
   - {t: '$$mdi:minus-circle-outline$$', type: none}
   - {t: '$$mdi:minus-circle-outline$$', type: none}
