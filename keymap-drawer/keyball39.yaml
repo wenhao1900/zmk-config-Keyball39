@@ -177,20 +177,20 @@ layers:
   - $$mdi:arrow-right-bold$$
   - '&mkp MB2'
   - $$mdi:volume-high$$
-  - $$mdi:arrow-left-bold$$
-  - {t: '$$mdi:transfer$$', type: trans}
-  - $$mdi:arrow-right-bold$$
   - Gui+W
+  - $$mdi:arrow-left-bold$$
+  - $$mdi:arrow-right-bold$$
+  - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:minus-circle-outline$$', type: none}
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:minus-circle-outline$$', type: none}
   - {t: '$$mdi:minus-circle-outline$$', type: none}
   - {t: '$$mdi:minus-circle-outline$$', type: none}
   - $$mdi:volume-low$$
+  - '&mkp MB4'
   - '&mkp MB1'
   - '&mmb_on'
   - '&mkp MB2'
-  - '&mkp MB4'
   - '&mkp MB2'
   - {t: '$$mdi:transfer$$', type: trans}
   - '&mkp MB1'
@@ -228,8 +228,8 @@ layers:
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
-  - '&mmb_off'
   - {t: '$$mdi:transfer$$', type: trans}
+  - '&mmb_off'
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
   - '&mmb_off'
