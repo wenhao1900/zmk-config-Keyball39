@@ -36,7 +36,7 @@ layers:
   - '&mkp MB1'
   - {t: '$$mdi:backspace$$', h: SYM}
   - {t: '$$mdi:keyboard-space$$', h: '$$mdi:apple-keyboard-command$$'}
-  - {t: MOUSE, h: toggle}
+  - '&td_to4'
   - {t: '$$mdi:keyboard-tab$$', h: SYM}
   - {t: '$$mdi:keyboard-return$$', h: NUM}
   - $$mdi:keyboard-esc$$
