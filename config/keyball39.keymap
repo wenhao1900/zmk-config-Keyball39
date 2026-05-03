@@ -15,16 +15,17 @@
 #include <dt-bindings/zmk/pointing.h>
 
 /* --- 1. 输入监听器：回归线性操控，解决“左右乱飞” --- */
+
 &mmv_input_listener {
     /* 将 2 1 改为 1 1，确保横竖速度一致，手感更直观 */
+
     input-processors = <&zip_xy_scaler 1 1>;
 };
 
-&msc_input_listener {
-    input-processors = <&zip_scroll_scaler 1 1>;
-};
+&msc_input_listener { input-processors = <&zip_scroll_scaler 1 1>; };
 
 /* --- 2. 行为与参数微调：消除“加速漂移” --- */
+
 &msc {
     acceleration-exponent = <0>;
     time-to-max-speed-ms = <0>;
@@ -33,6 +34,7 @@
 
 &mmv {
     /* 核心修改：加速度降为 0，实现完全线性移动，控制力倍增 */
+
     time-to-max-speed-ms = <0>;
     acceleration-exponent = <0>;
     trigger-period-ms = <8>;
@@ -53,7 +55,11 @@
 / {
     combos {
         compatible = "zmk,combos";
-        qw_esc { bindings = <&kp ESC>; key-positions = <0 1>; };
+
+        qw_esc {
+            bindings = <&kp ESC>;
+            key-positions = <0 1>;
+        };
     };
 
     behaviors {
@@ -68,6 +74,7 @@
         };
 
         /* 双击拇指键进入第 4 层 (MOUSE) */
+
         td_to4: tap_dance_to_layer_4 {
             compatible = "zmk,behavior-tap-dance";
             #binding-cells = <0>;
@@ -78,10 +85,11 @@
 
     macros {
         /* 单击触发：中键点击 + 切换到滚动层 */
+
         mmb_toggle: mmb_toggle {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&mkp MCLK>, <&tog SCROLL>;
+            bindings = <&mkp MCLK &tog SCROLL>;
             label = "MMB_TOGGLE";
         };
     };
@@ -92,30 +100,30 @@
         default_layer {
             label = "QWRT";
             bindings = <
-&kp Q        &kp W        &kp E        &kp R            &kp T                                     &kp Y        &kp U        &kp I        &kp O        &kp P
-&hm LSHFT A  &hm LCTRL S  &hm LALT D   &hm LGUI F       &kp G                                     &kp H        &hm RGUI J   &hm RALT K   &hm RCTRL L  &hm RSHFT SEMI
-&kp Z        &kp X        &kp C        &kp V            &kp B                                     &kp N        &kp M        &kp COMMA    &kp PERIOD   &kp SLASH
-&mkp MB2     &mmb_toggle  &mkp MB1     &lt 2 BACKSPACE  &mt LEFT_GUI SPACE  &td_to4  &lt 2 TAB    &lt 1 ENTER                                         &kp ESC
+&kp Q        &kp W        &kp E       &kp R            &kp T                                   &kp Y        &kp U  &kp I       &kp O        &kp P
+&hm LSHFT A  &hm LCTRL S  &hm LALT D  &hm LGUI F       &kp G                                   &kp H        &kp J  &hm RALT K  &hm RCTRL L  &hm RSHFT SEMI
+&kp Z        &kp X        &kp C       &kp V            &kp B                                   &kp N        &kp M  &kp COMMA   &kp PERIOD   &kp SLASH
+&mkp MB2     &mmb_toggle  &mkp MB1    &lt 2 BACKSPACE  &mt LEFT_GUI SPACE  &td_to4  &lt 2 TAB  &lt 1 ENTER                                  &kp ESC
             >;
         };
 
         number_layer {
             label = "NUM";
             bindings = <
-&kp GRAVE  &kp UP    &kp N3    &kp N4          &kp N9                               &kp N3     &kp N6  &trans     &trans     &trans
-&kp LEFT   &kp DOWN  &kp RIGHT &kp N0          &kp N8                               &kp N2     &kp N5  &kp MINUS  &kp EQUAL  &kp APOS
-&none      &none     &none     &none           &kp N7                               &kp N1     &kp N4  &kp LBKT   &kp RBKT   &kp CAPS
-&trans     &trans    &trans    &kp LEFT_SHIFT  &mt LEFT_GUI SPACE  &trans  &kp TAB  &kp ENTER                                &kp ESC
+&kp GRAVE  &kp UP    &kp N3     &kp N4          &kp N9                               &kp N3     &kp N6  &trans     &trans     &trans
+&kp LEFT   &kp DOWN  &kp RIGHT  &kp N0          &kp N8                               &kp N2     &kp N5  &kp MINUS  &kp EQUAL  &kp APOS
+&none      &none     &none      &none           &kp N7                               &kp N1     &kp N4  &kp LBKT   &kp RBKT   &kp CAPS
+&trans     &trans    &trans     &kp LEFT_SHIFT  &mt LEFT_GUI SPACE  &trans  &kp TAB  &kp ENTER                                &kp ESC
             >;
         };
 
         symbol_layer {
             label = "SYM";
             bindings = <
-&trans     &trans       &mkp MB4  &kp LA(Q)  &kp LA(A)                     &kp N7  &kp N8  &kp N9  &trans  &trans
-&kp LSHFT  &trans       &trans    &trans     &trans                        &kp N4  &kp N5  &kp N6  &trans  &trans
-&trans     &trans       &trans    &trans     &trans                        &kp N1  &kp N2  &kp N3  &trans  &trans
-&trans     &mmb_toggle  &trans    &trans     &kp N0     &trans  &trans     &kp N0                  &trans
+&trans     &trans       &mkp MB4  &kp LA(Q)  &kp LA(A)                  &kp N7  &kp N8  &kp N9  &trans  &trans
+&kp LSHFT  &trans       &trans    &trans     &trans                     &kp N4  &kp N5  &kp N6  &trans  &trans
+&trans     &trans       &trans    &trans     &trans                     &kp N1  &kp N2  &kp N3  &trans  &trans
+&trans     &mmb_toggle  &trans    &trans     &kp N0     &trans  &trans  &kp N0                          &trans
             >;
         };
 
@@ -125,27 +133,27 @@
 &kp F1  &kp F2   &kp F3   &kp F4   &none                   &none   &none  &none  &none  &none
 &kp F5  &kp F6   &kp F7   &kp F8   &none                   &none   &none  &none  &none  &none
 &kp F9  &kp F10  &kp F11  &kp F12  &none                   &none   &none  &none  &none  &none
-&trans  &trans   &trans   &trans   &trans  &trans  &trans  &trans                        &trans
+&trans  &trans   &trans   &trans   &trans  &trans  &trans  &trans                       &trans
             >;
         };
 
         mouse_layer {
             label = "MOUSE";
             bindings = <
-&kp N1    &kp W     &mkp MB4  &trans     &mkp MB1                         &kp N6            &kp N7     &kp N8          &kp N9     &kp N0
-&kp LEFT  &kp DOWN  &kp UP    &kp RIGHT  &mkp MB2                         &kp C_VOLUME_UP   &kp RG(W)  &kp LEFT_ARROW  &kp RIGHT  &trans
-&none     &trans    &none     &none      &none                            &kp C_VOLUME_DOWN &mkp MB4   &mkp MB1        &mmb_toggle &mkp MB2
-&mkp MB2  &trans    &mkp MB1  &trans     &mt LGUI SPACE  &trans  &to 0    &mt LG(SPACE) SPACE                                    &kp ESC
+&kp N1    &kp W     &mkp MB4  &trans     &mkp MB1                       &kp N6               &kp N7     &kp N8          &kp N9       &kp N0
+&kp LEFT  &kp DOWN  &kp UP    &kp RIGHT  &mkp MB2                       &kp C_VOLUME_UP      &kp RG(W)  &kp LEFT_ARROW  &kp RIGHT    &trans
+&none     &trans    &none     &none      &none                          &kp C_VOLUME_DOWN    &mkp MB4   &mkp MB1        &mmb_toggle  &mkp MB2
+&mkp MB2  &trans    &mkp MB1  &trans     &mt LGUI SPACE  &trans  &to 0  &mt LG(SPACE) SPACE                                          &kp ESC
             >;
         };
 
         scroll_layer {
             label = "SCROLL";
             bindings = <
-&trans  &trans       &trans  &trans  &trans                  &trans  &trans  &trans  &trans       &trans
-&trans  &trans       &trans  &trans  &trans                  &trans  &trans  &trans  &trans       &trans
-&trans  &trans       &trans  &trans  &trans                  &trans  &trans  &trans  &mmb_toggle  &trans
-&trans  &mmb_toggle  &trans  &trans  &trans  &trans  &to 0   &trans                               &trans
+&trans  &trans       &trans  &trans  &trans                 &trans  &trans  &trans  &trans       &trans
+&trans  &trans       &trans  &trans  &trans                 &trans  &trans  &trans  &trans       &trans
+&trans  &trans       &trans  &trans  &trans                 &trans  &trans  &trans  &mmb_toggle  &trans
+&trans  &mmb_toggle  &trans  &trans  &trans  &trans  &to 0  &trans                               &trans
             >;
         };
 
