@@ -6,10 +6,6 @@
 #define SCROLL  5
 #define SNIPE   6
 
-/* --- 1. 轨迹球性能定义 --- */
-#define ZMK_POINTING_DEFAULT_MOVE_VAL 1500
-#define ZMK_POINTING_DEFAULT_SCRL_VAL 100
-
 #include <behaviors/mouse_keys.dtsi>
 #include <dt-bindings/zmk/mouse.h>
 #include <input/processors.dtsi>
@@ -18,23 +14,16 @@
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/pointing.h>
 
-/* --- 2. 输入监听器：实现锁定滚动的核心逻辑 --- */
-
-/* 通用层：正常移动指针 */
+/* --- 1. 输入监听器：已修复 layers 报错 --- */
 &mmv_input_listener {
     input-processors = <&zip_xy_scaler 2 1>;
-};
-
-/* 仅在第 5 层 (SCROLL)：将轨迹球位移转换为网页滚动 */
-&mmv_input_listener {
-    layers = <SCROLL>;
-    input-processors = <&zip_xy_to_scroll_mapper>, <&zip_scroll_scaler 1 1>;
 };
 
 &msc_input_listener {
     input-processors = <&zip_scroll_scaler 1 1>;
 };
 
+/* --- 2. 行为与参数微调 --- */
 &msc {
     acceleration-exponent = <0>;
     time-to-max-speed-ms = <0>;
@@ -47,7 +36,6 @@
     trigger-period-ms = <8>;
 };
 
-/* --- 3. 参数微调（科研/打字平衡） --- */
 &lt {
     tapping-term-ms = <200>;
     flavor = "balanced";
@@ -60,14 +48,10 @@
     quick-tap-ms = <150>;
 };
 
-&caps_word { continue-list = <UNDERSCORE MINUS>; };
-
 / {
     combos {
         compatible = "zmk,combos";
         qw_esc { bindings = <&kp ESC>; key-positions = <0 1>; };
-        rt_lpar { bindings = <&kp LEFT_PARENTHESIS>; key-positions = <3 4>; };
-        yu_rpar { bindings = <&kp RIGHT_PARENTHESIS>; key-positions = <5 6>; };
     };
 
     behaviors {
@@ -81,38 +65,22 @@
             bindings = <&kp>, <&kp>;
         };
 
-        /* 双击进入 MOUSE 层 */
+        /* 双击拇指键进入第 4 层 (MOUSE) */
         td_to4: tap_dance_to_layer_4 {
             compatible = "zmk,behavior-tap-dance";
             #binding-cells = <0>;
             tapping-term-ms = <200>;
             bindings = <&none>, <&to 4>;
         };
-
-        /* 滚动锁定专用按键：单击切换锁定并触发中键，长按仅作为层切换 */
-        scroll_lock: scroll_lock {
-            compatible = "zmk,behavior-hold-tap";
-            #binding-cells = <2>;
-            flavor = "tap-preferred";
-            tapping-term-ms = <200>;
-            bindings = <&mo>, <&mmb_toggle>;
-        };
     };
 
     macros {
-        /* 核心宏：单击锁定/解锁滚动，同时保留中键点击信号 */
+        /* 单击触发：中键点击 + 切换到滚动层 */
         mmb_toggle: mmb_toggle {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
             bindings = <&mkp MCLK>, <&tog SCROLL>;
             label = "MMB_TOGGLE";
-        };
-
-        open_bg: open_bg {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&macro_press>, <&kp LGUI>, <&macro_tap>, <&mkp LCLK>, <&macro_release>, <&kp LGUI>;
-            label = "OPEN_BG";
         };
     };
 
