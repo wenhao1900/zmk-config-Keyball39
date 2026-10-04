@@ -11,6 +11,9 @@
 #include <input/processors.dtsi>
 #include <zephyr/dt-bindings/input/input-event-codes.h>
 #include <behaviors.dtsi>
+#include <behaviors/runtime_macro.dtsi>
+#include <dt-bindings/zmk/runtime_input_processor.h>
+#include <behaviors/runtime-input-processor.dtsi>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/pointing.h>
 
@@ -167,4 +170,24 @@
             >;
         };
     };
+};
+
+/* DYA 输入处理器；保留现有手动鼠标层切换，自动鼠标层默认关闭。 */
+&mouse_runtime_input_processor {
+    temp-layer = <4>;
+    temp-layer-activation-delay-ms = <200>;
+    temp-layer-deactivation-delay-ms = <400>;
+};
+
+&scroll_runtime_input_processor {
+    active-layers = <BIT(5)>;
+    x-codes = <INPUT_REL_X>;
+    y-codes = <INPUT_REL_Y>;
+    xy-to-scroll-enabled;
+    axis-snap-threshold = <100>;
+};
+
+/* 保留原固件的 1400 CPI，其他轨迹球参数使用卖家 DYA 驱动。 */
+&trackball {
+    cpi = <1400>;
 };

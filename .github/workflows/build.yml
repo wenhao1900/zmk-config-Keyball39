@@ -1,6 +1,107 @@
-name: Build ZMK Firmware
-on: [push, pull_request, workflow_dispatch]
+name: Build ZMK firmware
+
+on:
+  push:
+    branches:
+      - main
+      - dya
+      - codex/keyball39-firmware-20261004
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      release:
+        description: "Create a release artifact with given version"
+        required: true
 
 jobs:
   build:
-    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@v0.3
+    runs-on: ubuntu-latest
+    container:
+      image: zmkfirmware/zmk-build-arm:stable
+    name: Build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Cache west modules
+        uses: actions/cache@v4
+        continue-on-error: true
+        env:
+          cache_name: cache-west-modules
+        with:
+          path: dependencies/
+          key: ${{ runner.os }}-build-${{ env.cache_name }}-${{ hashFiles('config/west*.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache_name }}-
+      - name: Init
+        run: |
+          git config --global --add safe.directory ${{ github.workspace }}
+          make init-standalone
+      - name: Build
+        run: make build-all
+      - name: Verify sleep and wake configuration
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          checked = set()
+          for cfg in Path("build").rglob(".config"):
+              target = cfg.parent.parent.name
+              if target not in ("keyball39_left", "keyball39_right"):
+                  continue
+              text = cfg.read_text()
+              required = ("CONFIG_ZMK_SLEEP=y", "CONFIG_ZMK_IDLE_SLEEP_TIMEOUT=1200000",
+                          "CONFIG_ZMK_CUSTOM_SETTINGS=y", "CONFIG_ZMK_SETTINGS_RPC=y",
+                          "CONFIG_ZMK_SPLIT_RELAY_EVENT=y")
+              for setting in required:
+                  assert setting in text.splitlines(), (target, setting)
+              dts = (cfg.parent / "zephyr.dts").read_text()
+              node = re.search(r"kscan0: kscan\s*\{([^}]+)\}", dts, re.S)
+              assert node and "wakeup-source;" in node.group(1), target
+              if target == "keyball39_right":
+                  assert "CONFIG_ZMK_POINTING=y" in text.splitlines()
+                  assert "CONFIG_ZMK_PMW3610_CUSTOM_SETTINGS=y" in text.splitlines()
+                  assert 'compatible = "cormoran,pmw3610"' in dts
+              checked.add(target)
+              print(target + ": DYA settings, 1200000 ms sleep and key wakeup verified")
+          assert checked == {"keyball39_left", "keyball39_right"}, checked
+          PY
+      - name: Copy artifacts
+        shell: sh -x {0}
+        run: |
+          mkdir -p artifacts
+          find ./build -type f -path '*/zephyr/zmk.uf2' \
+          | while read -r f; do
+              echo "Found: $f"
+              name=$(basename "$(dirname "$(dirname "$f")")")
+              mv "$f" "artifacts/${name}.uf2"
+            done
+
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: keyball39
+          path: artifacts
+  release:
+    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.release != '' }}
+    needs: build
+    runs-on: ubuntu-latest
+    name: Release
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: keyball39
+          path: artifacts
+      - name: Create release
+        run: |
+          gh release create ${{ github.event.inputs.release }} \
+            --title "Keyball39 firmware ${{ github.event.inputs.release }}" \
+            --generate-notes \
+            --latest \
+            --target ${{ github.sha }} \
+            artifacts/*.uf2
+        env:
+          GH_TOKEN: ${{ github.token }}
